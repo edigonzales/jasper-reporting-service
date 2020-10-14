@@ -84,7 +84,7 @@ public class JasperEndpointController {
     /* Example http://localhost:8080/reports/rpt_subfolder/rpt_example/?format=pdf&personid=0 */
 
     @RequestMapping(value = {"/{reportname}/", "/{reportfolder}/{reportname}/"}, method = RequestMethod.GET)
-    public ModelAndView getRptByParam(final ModelMap modelMap, ModelAndView modelAndView, @PathVariable Map<String, String> pathVariables,  HttpServletRequest request) {
+    public ModelAndView getRptByParam(final ModelMap modelMap, ModelAndView modelAndView, @PathVariable Map<String, String> pathVariables,  HttpServletRequest request) throws SQLException {
 
         Map<String, String[]> map = request.getParameterMap();
         String reportfolder = pathVariables.get("reportfolder");
@@ -177,6 +177,13 @@ public class JasperEndpointController {
         //It is important that the underlying Jasper Report supports the Query parameters
 
         modelAndView = new ModelAndView(report, modelMap);
+        
+        dataConn1.close();
+        dataConn2.close();
+        dataConn3.close();
+        dataConn4.close();
+        connectionsCreated = false;
+        
         return modelAndView;
     }
 }
